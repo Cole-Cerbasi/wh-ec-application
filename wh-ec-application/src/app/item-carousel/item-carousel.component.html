@@ -1,0 +1,9 @@
+<div id="{{ id }}" class="carousel slide">
+  <div class="carousel-inner">
+    <div *ngFor="let set of cardSets; let i = index" class="carousel-item" [class.active]="i === 0">
+      <div *ngFor="let card of set">
+        <!--app-item-card [id]="card.id"></app-item-card-->
+      </div>
+    </div>
+  </div>
+</div>

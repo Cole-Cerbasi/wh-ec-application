@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
@@ -11,3 +12,14 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent {
   title = 'wh-ec-application';
 }
+
+
+/*
+import { Component } from '@angular/core'
+
+@Component({
+    selector: 'app-root',
+    template: '<p>test</p>'
+})
+export class AppComponent { }
+*/

@@ -12,19 +12,133 @@
 <body class="bg" data-bs-theme="light">
   <app-navbar-g></app-navbar-g>
 
-  <div class="container rounded border" style="height: 500px;">
+  <div class="container rounded mt-3" style="min-height: 500px;" id="rowContainer">
     <div class="row p-2">
-      Main Content View
-      <!--
-      <app-tile-lg></app-tile-lg>
-      <app-carousel></app-carousel>
-      <app-item-card></app-item-card>
-      -->
     </div>
   </div>
 
   <app-footer-g></app-footer-g>
   <app-root></app-root>
 </body>
+<!--
+  Simulating api fetch by loading the content cards with JS
+-->
+<script>
+console.log("running before string");
+let tmp_card = `
+<div class="col-sm-3">
+  <div class="card w-100">
+    <img class="card-img-top border-bottom" style="height: 158px !important; width: 100% !important; object-fit: contain;" src="{{ pre_image }}">
+    <div class="card-body">
+      <h5 class="text-muted card-title">{{ title }}</h5>
+      <h6 class="text-muted card-subtitle">{{ link_star }} <i class="fa fa-star" aria-hidden="true"></i></h6>
+      <div class="card-text">
+        $20.00  <small class="muted">$45.00</small>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+let tmp_carousel = `
+<div class="row w-100">
+  <div class="carousel slide w-100">
+    <div class="carousel-inner" id="{{ id }}">
+
+    </div>
+  </div>
+</div>
+`;
+let tmp_carousel_item = `
+  <div class="carousel-item active" id="{{ carousel_id }}">
+    <div class="container-fluid">
+      <div class="row">
+        {{ content }}
+        </div>
+      </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#{{ carousel_id }}" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#{{ carousel_id }}" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+`;
+let tmp_banner = `
+  <div class="row mt-1">
+    <div class="container-fluid p-2">
+      <div class="row border rounded shadow">
+        <div class="col-sm-9 p-2">
+          <h3 class="p-3">{{ title }}</h3>
+          <br>
+          <h6 class="text-muted p-3">{{ subtitle }}</h6>
+        </div>
+        <div class="col-sm-2 text-center">
+          <div class="d-flex justify-content-center">
+            <button class="btn btn-primary p-2 pr-6"> View </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+`;
+
+console.log("running after string");
+
+//this is here as POC
+var buildComponent = (component, arg = {}) => {
+  console.log("Running !!!");
+  try{
+    Object.keys(arg).forEach(key=>{
+      //console.log(component)
+        component = component.replace(new RegExp(`{{\\s*${key}\\s*}}`, 'g'), arg[key]);
+      //build+=" ["+key+"]=\""+arg[key]+"\"";
+    });
+    return component;
+  }catch(e){
+    console.warn(e);
+  }
+}
+
+var container = document.getElementById("rowContainer");
+container.innerHTML += buildComponent(tmp_carousel, {
+  id: "product_row_1",
+  carousel_id: "product_carousel_1"
+});
+container.innerHTML += buildComponent(tmp_banner, {
+  title: "Banner",
+  subtitle: "banner subtitle"
+});
+container.innerHTML += buildComponent(tmp_carousel, {
+  id: "product_row_2",
+  carousel_id: "product_carousel_2"
+});
+
+var tileGroup = document.getElementById("product_row_1");
+var tileGroup2 = document.getElementById("product_row_2");
+
+var shop_cards = "";
+for(let i = 0; i < 4; i++){
+  shop_cards += buildComponent(tmp_card, {
+    title: "Item_"+i,
+    pre_image: "https://t4.ftcdn.net/jpg/02/51/95/53/360_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg",
+    link_star: "5",
+  });
+}
+
+tileGroup.innerHTML += buildComponent(tmp_carousel_item, {
+  content: shop_cards
+});
+tileGroup2.innerHTML += buildComponent(tmp_carousel_item, {
+  content: shop_cards
+});
+tileGroup2.innerHTML += buildComponent(tmp_carousel_item, {
+  content: shop_cards
+});
+
+console.log("this is running");
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </html>
